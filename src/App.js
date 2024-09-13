@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Header from './componentes/header';
+import BurgerCard from './componentes/BurgerCard';
+import Cart from './componentes/Cart';
+import { Container, Row, Col } from 'react-bootstrap';
 
-function App() {
+const App = () => {
+  const [cart, setCart] = useState([]);
+
+  const burgers = [
+    { name: 'Hamburguesa Clásica', image: 'imagen_clasica.jpg', price: 500 },
+    { name: 'Hamburguesa Especial', image: 'imagen_especial.jpg', price: 650 },
+    { name: 'Hamburguesa Vegetariana', image: 'imagen_vegetariana.jpg', price: 550 },
+  ];
+
+  const addToCart = (burger) => {
+    setCart([...cart, burger]);
+  };
+
+  const removeFromCart = (index) => {
+    const newCart = cart.filter((_, i) => i !== index);
+    setCart(newCart);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+      <Container>
+        <Row>
+          {burgers.map((burger, index) => (
+            <Col key={index} md={4}>
+              <BurgerCard burger={burger} addToCart={addToCart} />
+            </Col>
+          ))}
+        </Row>
+        <Cart cartItems={cart} removeFromCart={removeFromCart} />
+      </Container>
     </div>
   );
-}
+};
 
 export default App;
